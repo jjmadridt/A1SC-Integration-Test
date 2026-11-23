@@ -1,0 +1,3 @@
+function validate(p){if(!p||p.version!==1||p.kind!=="A1SC-dummy"||typeof p.sentAt!=="string"||!Number.isFinite(Date.parse(p.sentAt))||!Array.isArray(p.week)||p.week.length>14||p.week.length===0||!p.week.every(x=>x&&["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].includes(x.day)&&["Total Body","Cycle","Run","Swim","Triathlon"].includes(x.activity)&&Number.isInteger(x.minutes)&&x.minutes>0&&x.minutes<=1440&&["low","moderate","high"].includes(x.intensity)))throw Error("Invalid dummy plan");return p;}
+function encode(p){return encodeURIComponent(JSON.stringify(validate(p)));}
+function decode(h){if(!h.startsWith("#plan=")||h.length>8000)throw Error("Missing or oversized plan");return validate(JSON.parse(decodeURIComponent(h.slice(6))));}
